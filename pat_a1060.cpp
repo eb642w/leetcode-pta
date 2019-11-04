@@ -36,6 +36,10 @@ Note: Simple chopping is assumed without rounding.
  * 2.如果大于1，题目中提到可能有前导0，先去掉他们，然后算到首位数字到小数点前一位或者最后一位（没有小数点），指数就是位数
  *
  * 3.根据结果比较小鼠后面部分和整数部分
+ *
+ * 注意：
+ * 因为可能有0.0000这种情况，对小数点后的0进行处理后，要把e的值改回0  测试点6
+ *
  * */
 
 string deal(string s, int & e, const int n)
@@ -46,7 +50,7 @@ string deal(string s, int & e, const int n)
     if(s[0] == '.')
     {
         s.erase(s.begin());
-        while(s.size()>0 and s[0] == '0')
+        while(s.size() > 0 and s[0] == '0')
         {
             s.erase(s.begin());
             e--;
