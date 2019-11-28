@@ -1,53 +1,49 @@
-struct ListNode {
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(nullptr) {}
-};
-
 class Solution {
 public:
-    long long micheng(int n)
-    {
-        long long a = 1;
-        if(n == 0)
-            return 1;
-        for(int i = 0;i < n;++i)
-        {
-            a *= 10;
-        }
-        return a;
-    }
-
-
+    bool jinwei = false;
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        ListNode* p = l1;
-        long long a = 0, b = 0;
-        int i = 0;
-        while(p!=nullptr)
+        ListNode* p1 = l1;
+        ListNode* p2 = l2;
+        ListNode* header = new ListNode(l1->val + l2->val);
+        ListNode* p = header;
+        p1 = p1->next;
+        p2 = p2->next;
+        if(header->val >= 10)
+            jinwei = true;
+        while(p1 != nullptr or p2 != nullptr)
         {
-            a = a + p->val * micheng(i);
-            i++;
-            p = p->next;
-        }
-        i = 0;
-        p = l2;
-        while(p!=nullptr)
-        {
-            b = b + p->val * micheng(i);
-            i++;
-            p = p->next;
-        }
-        long long sum = a + b;
-        string summ = to_string(sum);
-        p = new ListNode(summ[summ.size()-1]-'0');
-        ListNode* header = p;
-        for(i = (int)summ.size() - 2;i >= 0;i--)
-        {
-            auto q = new ListNode(summ[i]-'0');
+            ListNode* q = new ListNode(0);
+            if(p1!= nullptr)
+            {
+                q->val += p1->val;
+                p1= p1->next;
+            }
+            if(p2!= nullptr)
+            {
+                q->val += p2->val;
+                p2 = p2->next;
+            }
+            if(jinwei)
+            {
+                p->val %= 10;
+                q->val++;
+                jinwei = false;
+            }
+            if(q->val >= 10)
+            {
+                //q->val = q->val%10;
+                jinwei = true;
+
+            }
             p->next = q;
-            p = q;
+            p = p->next;
+
+        }
+        if(jinwei)
+        {
+            p->next = new ListNode(1);
+            p->val %= 10;
         }
         return header;
-
     }
 };
